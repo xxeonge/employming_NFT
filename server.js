@@ -5,6 +5,12 @@ const bodyParser = require('body-parser')
 const dotenv = require("dotenv");
 dotenv.config();
 
+// CORS settings. yes I hard coded.
+const cors = require('cors');
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001']
+}));
+
 const userRouter = require("./routes/user")
 const sbtRouter = require("./routes/sbt")
 
