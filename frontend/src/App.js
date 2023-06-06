@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import CalendarViewer from "./components/calendar";
+import FormSignup from "./components/mintNFTForm";
+class App extends Component {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+    return (
+
+      <div>
+        <div className="row">
+        <div className="col-sm-8">
+        <CalendarViewer/>
+
+        </div>
+        <div className="col-sm-4">
+        <FormSignup/>
+        </div>
+        </div>
+
+
+      </div>
+    );
+  }
 }
 
 export default App;
