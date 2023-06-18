@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/sbt", sbtRouter)
+app.use('/uploads', express.static('uploads'));
 
 const handleListen = () => {
     // TODO: Update fetching PORT
