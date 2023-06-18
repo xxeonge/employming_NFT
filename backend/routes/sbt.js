@@ -25,13 +25,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const baseUrl = "http://localhost:8004/uploads/"
 
-router.post("/",upload.single('file'),async (req, res) => {
+router.post("/", upload.single('file'),async (req, res) => {
     try {
-        if (req.body.owner.length !== 42) return res.send('Invalid owner').end();
-        //if (req.body.limit !== parseInt(req.body.limit)) return res.send('Invalid limit').end();
-        if (req.body.name.length == 0) return res.send('Invalid name').end();
-        if (req.body.symbol.length == 0) return res.send('Invalid symbol').end();
-        if (req.body.salt.length == 0) return res.send('Invalid symbol').end();
+        // if (req.body.owner.length !== 42) return res.send('Invalid owner').end();
+        // //if (req.body.limit !== parseInt(req.body.limit)) return res.send('Invalid limit').end();
+        // if (req.body.name.length == 0) return res.send('Invalid name').end();
+        // if (req.body.symbol.length == 0) return res.send('Invalid symbol').end();
+        // if (req.body.salt.length == 0) return res.send('Invalid symbol').end();
     } catch (error) {
         res.status(500).end();
     }
@@ -40,11 +40,11 @@ router.post("/",upload.single('file'),async (req, res) => {
     console.log('deploy url :', baseUrl.concat(file.filename)); // deploy 시 url 파라미터이걸로 사용해주세요
 
     //req.body.name, req.body.symbol, req.body.limit, req.body.owner, req.body.salt, req.body.url
-    //const deployHash = await EmploymintFactory.deploy("11","11","1","0xfE00fa244D69BFD8B1c108321C4713993F9EbB7C","44",baseUrl.concat(file.filename));
-    //await deployHash.wait();
-    //return res.status(200).send(deployHash).end();
+    const deployHash = await EmploymintFactory.deploy("11","11","1","0xfE00fa244D69BFD8B1c108321C4713993F9EbB7C","44",baseUrl.concat(file.filename));
+    await deployHash.wait();
+    return res.status(200).send(deployHash).end();
 
-    return res.status(200).send(req.body).end();
+    // return res.status(200).send(req.body).end();
 })
 
 module.exports = router;

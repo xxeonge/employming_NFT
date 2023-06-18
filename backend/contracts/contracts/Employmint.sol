@@ -16,7 +16,8 @@ contract Employmint is ERC721, Ownable {
     string private url;
     
     constructor(string memory _name, string memory _symbol, uint256 _limit, address _owner,string memory _url) ERC721(_name, _symbol) {
-        limit = _limit; transferOwnership(_owner);
+        limit = _limit; 
+        transferOwnership(_owner);
         url = _url;
     }
     
