@@ -93,34 +93,41 @@ const Mint = () => {
     // I know... not good coding style.
     return (
         <div>
-            <h1 onClick={walletConnect}>
-                Wallet Address : {account}
-            </h1>
-            <h1>Mint NFT</h1>
-    
-            <form onSubmit={handleUpload}>
-                <div>
-                    <input type="file" id="img" onChange={handleImgChange} />
-                </div>
+
+                <h1 onClick={walletConnect}>
+                    Wallet Address : {account}
+                </h1>
+                <h1>Mint NFT</h1>
         
-                <label> 
-                    인증서 이름 : <input type="text" id="name" value={name} onChange={handleNameChange} />
-                </label>
-                <hr/>
-                <label>
-                    인증서 식별자 : <input type="text" id="symbol" value={symbol} onChange={handleSymbolChange} />
-                </label>
-                <hr/>
-                <button type="submit">인증서 발행</button>
-            </form>
+                <form onSubmit={handleUpload}>
+                    <p>
+                        <input type="file" id="img" onChange={handleImgChange} />
+                    </p>
+                    <p>
+
+                    <label> 
+                        인증서 이름 : <input type="text" id="name" value={name} onChange={handleNameChange} />
+                    </label>
+                    </p>
+                    <p>
+                    <label>
+                        인증서 식별자 : <input type="text" id="symbol" value={symbol} onChange={handleSymbolChange} />
+                    </label>
+                    </p>
+                    <hr/>
+                    <button type="submit">인증서 발행</button>
+                </form>
+
 
             <h1>Show Contract</h1>
 
             <form onSubmit={handleShowContract}>
+                <p>
                 <label> 
                     인증서 이름 : <input type="text" id="nftName" value={nftName} onChange={handleNftNameChange} />
                 </label>
                 <hr/>
+                </p>
 
                 <button type="submit">컨트랙트 보기</button>
                 {publishedNftName && <img src={`http://localhost:8080/api/v1/sbt?nftName=${publishedNftName}`} alt="" />}
