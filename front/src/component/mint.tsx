@@ -8,15 +8,31 @@ const Mint = () => {
     const [name, setName] = useState('');
     const [symbol, setSymbol] = useState('');
     const [img, setImg] = useState<File | null>(null);
-  
+    const [isShown, setIsShown] = useState(false);
+
+
+
+    const [nftName, setNftName] = useState('');
+    const [publishedNftName, publishNftName] = useState<string>('');
+
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setName(event.target.value);
     };
+
   
     const handleSymbolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSymbol(event.target.value);
     };
 
+    const handleNftNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNftName(event.target.value);
+    };
+
+    
+
+    const handleClick = (event: ChangeEvent<HTMLInputElement>) => {
+        setIsShown(current => !current);
+      };
 
     const handleImgChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -56,7 +72,7 @@ const Mint = () => {
         console.log(formJson);
         
         try{
-            const response = await fetch('http://localhost:8004/api/v1/sbt', {
+            const response = await fetch('http://localhost:8080/api/v1/sbt', {
                 method: 'POST',
                 body: formData,
             });
@@ -64,10 +80,17 @@ const Mint = () => {
         }catch(error){
             console.log(error);
         }
+
+        // console.log("THIS IS RESPONSE!", response.text());
   
     };
 
     
+    const handleShowContract = async(event: React.FormEvent) => {
+        event.preventDefault();        
+        publishNftName(nftName);
+    };
+    // I know... not good coding style.
     return (
         <div>
             <h1 onClick={walletConnect}>
@@ -90,6 +113,19 @@ const Mint = () => {
                 <hr/>
                 <button type="submit">인증서 발행</button>
             </form>
+
+            <h1>Show Contract</h1>
+
+            <form onSubmit={handleShowContract}>
+                <label> 
+                    인증서 이름 : <input type="text" id="nftName" value={nftName} onChange={handleNftNameChange} />
+                </label>
+                <hr/>
+
+                <button type="submit">컨트랙트 보기</button>
+                {publishedNftName && <img src={`http://localhost:8080/api/v1/sbt?nftName=${publishedNftName}`} alt="" />}
+            </form>
+
         </div>
 
     );
