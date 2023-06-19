@@ -19,7 +19,7 @@ export default function MyForm() {
         console.log("error:", err);
       });
 
-      ;
+
   
       // Or you can work with it as a plain object:
       const formJson = Object.fromEntries(formData.entries());

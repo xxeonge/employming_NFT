@@ -13,12 +13,16 @@ contract Employmint is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private currentTokenId;
     uint256 public limit;
+    string private url;
     
-    constructor(string memory _name, string memory _symbol, uint256 _limit, address _owner) ERC721(_name, _symbol) {limit = _limit; transferOwnership(_owner);}
+    constructor(string memory _name, string memory _symbol, uint256 _limit, address _owner,string memory _url) ERC721(_name, _symbol) {
+        limit = _limit; 
+        transferOwnership(_owner);
+        url = _url;
+    }
     
     function mintTo(address recipient)
         public
-        onlyOwner
         returns (uint256)
     {
         // limit을 0으로 설정하면 제한 없이 mint 가능
@@ -36,5 +40,11 @@ contract Employmint is ERC721, Ownable {
         uint256 tokenId
     ) internal virtual override {
         revert Employmint__TransferForbidded();
+    }
+
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        //_requireMinted(tokenId);
+        return string(abi.encodePacked(url));
     }
 }

@@ -6,7 +6,7 @@ async function main() {
   const employmint = await EmploymintFactory.deploy();
 
   await employmint.deployed();
-  console.log(employmint)
+  console.log("=EmploymintFactory== ", employmint.address)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
