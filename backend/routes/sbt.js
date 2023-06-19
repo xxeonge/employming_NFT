@@ -3,6 +3,8 @@ const multer = require('multer');
 const ethers = require("ethers");
 const router = express.Router();
 const dotenv = require("dotenv");
+const fs = require('fs');
+const path = require('path');
 dotenv.config();
 const provider = new ethers.JsonRpcProvider(process.env.RPC_ENDPOINT)
 let wallet = new ethers.Wallet(process.env.PRIVATE_KEY)
@@ -23,28 +25,50 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-const baseUrl = "http://localhost:8004/uploads/"
+const baseUrl = "http://localhost:8080/uploads/"
+
+router.get('/', async(req, res) => {
+    // res.send('Hello, World!');
+    // yes hard coded... to png
+    let fileName = `${req.query.nftName}.png`;
+    const uploadPath = path.join(path.dirname(__dirname), "uploads")
+    res.sendFile(fileName , { root : uploadPath});
+
+    // res.sendFile("C:/Users/min98/Documents/repos/employmint/backend/uploads/"+fileName);
+    return res;
+  });
 
 router.post("/", upload.single('file'),async (req, res) => {
-    try {
-        // if (req.body.owner.length !== 42) return res.send('Invalid owner').end();
-        // //if (req.body.limit !== parseInt(req.body.limit)) return res.send('Invalid limit').end();
-        // if (req.body.name.length == 0) return res.send('Invalid name').end();
-        // if (req.body.symbol.length == 0) return res.send('Invalid symbol').end();
-        // if (req.body.salt.length == 0) return res.send('Invalid symbol').end();
+    // rename it https://github.com/expressjs/multer/issues/280
+    // hard coded... to png
+    const renamed = path.join(path.dirname(req.file.path), req.body.name+".png");
+    fs.renameSync(req.file.path, renamed);
+
+
+  try {
+        if (req.body.owner.length !== 42) return res.send('Invalid owner').end();
+        if (req.body.limit !== parseInt(req.body.limit)) return res.send('Invalid limit').end();
+        if (req.body.name.length == 0) return res.send('Invalid name').end();
+        if (req.body.symbol.length == 0) return res.send('Invalid symbol').end();
+        if (req.body.salt.length == 0) return res.send('Invalid symbol').end();
     } catch (error) {
         res.status(500).end();
     }
+    // console.log(req.body); // deploy 시 url 파라미터이걸로 사용해주세요
 
     const file = req.file;
     console.log('deploy url :', baseUrl.concat(file.filename)); // deploy 시 url 파라미터이걸로 사용해주세요
 
-    //req.body.name, req.body.symbol, req.body.limit, req.body.owner, req.body.salt, req.body.url
-    const deployHash = await EmploymintFactory.deploy("11","11","1","0xfE00fa244D69BFD8B1c108321C4713993F9EbB7C","44",baseUrl.concat(file.filename));
-    await deployHash.wait();
-    return res.status(200).send(deployHash).end();
+    //====================================================
+    // 흑흑 deploy가 안되요...
+    //====================================================
+    // const deployHash = await EmploymintFactory.deploy("NAME","SIMBOL",1000,"99f910f4f4a1ee2e88b0726f0e3b19f8733d3f18a0fab6bb92f4ff86cb0cab9f",123, baseUrl.concat(file.filename));
+    // const deployHash = await EmploymintFactory.deploy();
 
-    // return res.status(200).send(req.body).end();
+
+    return res.status(200).send(req.body).end();
 })
+
+
 
 module.exports = router;
